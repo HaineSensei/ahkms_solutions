@@ -37,6 +37,9 @@ Consider the function $\N^k \to \calC_k$ given by the map
 \[
     (n_1, n_2, \dots, n_k) \mapsto \{(r-1) + \sum_{i=1}^r n_i | r \in \{1, \dots, k\}\}.
 \]
+Note the $r$-th term strictly exceeds the $(r-1)$-th term, since their difference is $1 + n_r \geq 1$; hence the set has exactly $k$ elements and the map indeed lands in $\calC_k$.
+
+\bigskip
 This function is an injection since we can invert it:
 \begin{align*}
     \{(r-1) + \sum_{i=1}^r n_i | r \in \{1, \dots, k\}\} &\overset{ord}\mapsto (n_1, 1 + n_1 + n_2, \dots, k-1 + \sum_{i=1}^k n_i) \\
@@ -52,10 +55,10 @@ Then $|\calC_k| = |\N^k|$ by applying Schr\"oder-Bernstein with these injections
 
 Consider the function $diag \colon \N^2 \to \N$ defined as follows:
 \[
-    (m,n) \mapsto m + \sum_{i=1}^{m+n} i.
+    (m,n) \mapsto n + \sum_{i=1}^{m+n} i.
 \]
-One can think of this function as ordering $\N^2$ primarily by the sum of components, with a fall back to the first component (see figure \ref{Cantor}).
-\begin{figure}[h]
+One can think of this function as ordering $\N^2$ primarily by the sum of components, with a fall back to the second component (see figure \ref{Cantor}).
+\begin{figure}[ht]
     \includegraphics[width=0.5\textwidth]{Cantor_pairing.png}
     \caption{A diagram showing the ordering perspective.}
     \label{Cantor}
@@ -63,17 +66,17 @@ One can think of this function as ordering $\N^2$ primarily by the sum of compon
 
 \bigskip
 As such, we can easily construct an inverse map $diag^{-1} \colon \N \to \N^2$. Indeed, to find $(m,n) := diag^{-1}(x)$ we first let $w$ be the index of the largest triangle number at most $x$.
-Then let $t$ be the $w$th triangle number. Then we know that $m = x - t$ and $n = w - m$.
+Then let $t$ be the $w$th triangle number. Then we know that $n = x - t$ and $m = w - n$.
 Putting these operations together forms a simple function which is easy to observe is the inverse of $diag$.
 
 Unlike the previous inverses we've constructed, this acts on any element $n \in \N$, making it a total inverse rather than a partial inverse, and hence proving both functions are bijections, and thus that $|\N^2| = |\N|$.
 
 \qpart{Show that $|\N^k| = |\N|$ for all positive integers $k$ by induction.}
 
-To prove this by induction, we only need prove $|\N^{k+1}| = |\N|$ given that $|\N^k| = |\N|$ for each $k >= 2$ since it is trivial for $k = 1$.
+To prove this by induction, the base case $k = 1$ is trivial. For the inductive step, we assume $|\N^k| = |\N|$.
 
 \bigskip
-Suppose that $|\N^k| = |\N|$, ie. we have a bijection $\N^k \overset{f_k}\longleftrightarrow \N$. Then we can compose bijections as follows, to obtain a bijection $\N^{k+1} \overset{f_{k+1}}\longleftrightarrow \N$:
+That is, we have a bijection $\N^k \overset{f_k}\longleftrightarrow \N$. Then we can compose bijections as follows, to obtain a bijection $\N^{k+1} \overset{f_{k+1}}\longleftrightarrow \N$:
 \[
     \N^{k+1} = \N \times \N^k \overset{\operatorname{id}\times f_k}\longleftrightarrow \N \times \N = \N^2 \overset{diag}\longleftrightarrow \N.
 \]
