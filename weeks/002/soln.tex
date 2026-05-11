@@ -1,0 +1,112 @@
+\documentclass{amsart}
+\usepackage{amsmath, amssymb}
+\usepackage{physics}
+
+% For \includegraphics 
+\usepackage{graphicx}
+
+\title{Week 002}
+\author{Kazuya Haine}
+\date{}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\calS}{\mathcal{S}}
+
+\newtheorem*{definition}{Definition}
+\newtheorem*{remark}{Remark}
+
+\newtheorem{theorem}{Theorem}
+
+\newcounter{qpart}
+\newcommand{\qpart}[1]{%
+  \stepcounter{qpart}%
+  \bigskip\noindent\textbf{(\alph{qpart})}\quad\textit{#1}\par\bigskip%
+}
+
+\begin{document}
+\maketitle
+
+\begin{definition}[Additive uniqueness]
+    Let $\calS$ be a subset of the integers, $\Z$. $\calS$ is said to satisfy \underline{additive uniqueness} if, whenever $n_k \in \calS$ for $k = 1,2,3,4$ and $n_1 + n_2 = n_3 + n_4$, then either $n_1 = n_3$ or $n_1 = n_4$.
+\end{definition}
+\begin{remark}
+    This can be interpreted as saying that addition is injective on $\calS$ when seen as an operation on unordered pairs.
+\end{remark}
+\begin{center}
+\rule{0.9\textwidth}{0.5pt}
+\end{center}
+
+\bigskip
+\noindent
+Let $\calS$ be a subset of $\Z$ with $N \ge 1$ elements satisfying additive uniqueness. Define $f \colon \C \to \C$ by
+\begin{equation*}
+    f(x) := \sum_{n\in\calS} e^{2\pi inx}.
+\end{equation*}
+
+\qpart{Evaluate the following: \begin{equation*} (1) \quad \int_0^1 |f(x)|^2 \dd{x} \qquad (2) \quad \int_0^1 |f(x)|^4 \dd{x}\end{equation*}}
+
+\noindent
+$|f(x)|^2$ can be expressed as the product of $f(x)$ with it's complex conjugate:
+\begin{align*}
+    |f(x)|^2 &= f(x) \overline{f(x)} \\
+             &= \left(\sum_{m \in \calS} e^{2\pi imx}\right)\left(\sum_{n \in \calS} e^{-2\pi inx}\right) \\
+             &= \sum_{m \in \calS} \sum_{n \in \calS} e^{2\pi i(m-n)x} \\
+             &= \left(\sum_{n \in \calS} 1\right) + \left(\sum_{\substack{n,m \in \calS, \\ n < m}} 4\times\frac{e^{i(2\pi(m-n)x)} + e^{-i(2\pi(m-n)x)}}{2}\right) \\
+             &= N + \sum_{\substack{n,m \in \calS, \\ n < m}} 4\cos(2\pi(m-n)x)
+\end{align*}
+Thus, 
+\begin{align*}
+    \int_0^1 |f(x)|^2 \dd{x} &= \int_0^1 \left(N + \sum_{\substack{n,m \in \calS, \\ n < m}} 4\cos(2\pi(m-n)x) \right)\dd{x} \\
+                             &= N,
+\end{align*}
+since every cosine term contributes 0 to the integral.
+
+\noindent
+We can use a similar trick to evaluate the second integral by considering $|f(x)|^4$ as $f(x)^2 \overline{f(x)^2}$. We first expand $f(x)^2$:
+\begin{align*}
+    f(x)^2 &= \left(\sum_{m \in \calS} e^{2\pi imx}\right)\left(\sum_{m \in \calS} e^{2\pi imx}\right) \\
+           &= \sum_{m \in \calS} \sum_{n \in \calS} e^{2\pi i(m+n)x} \\
+           &= \sum_{n \in \calS} e^{2\pi i(2n)x} + 2\sum_{\substack{n,m \in \calS \\ n < m}} e^{2\pi i(n + m)x}
+\end{align*}
+Here, additive uniqueness tells us that each of the terms $2n$, and $m + n$ indexed in these ways are distinct. thus, $f(x)^2$ essentially takes the form of $f(x) + 2g(x)$ where $g$ is the corresponding function to $f$ when replacing $\calS$ with $\{ n + m \mid n,m \in \calS \}$.
+
+\bigskip\noindent
+Repeating the expansion of the absolute square as the product with the complex conjugate:
+\begin{align*}
+    |f(x)|^4 &= f(x)^2 \overline{f(x)^2} \\
+             &= (f(x) + 2g(x))\overline{(f(x) + 2g(x))} \\
+             &= f(x)\overline{f(x)} + 4g(x)\overline{g(x)} + 2\bigg(f(x)\overline{g(x)} + g(x)\overline{f(x)}\bigg)
+\end{align*}
+We know how $f(x)\overline{f(x)}$ expands and what it contributes to the integral: $N$, and since $g(x)\overline{g(x)}$ has the same structure, it contributes $\# \{n + m \mid n, m \in \calS \} = \frac{N(N-1)}{2}$.
+Finally, the $f(x)\overline{g(x)} + g(x)\overline{f(x)}$ corresponds to more cosine terms with non-zero integer multiples of $2\pi$ periods in the expansion, so it contributes 0.
+So, together,
+\begin{equation*}
+    \int_0^1 |f(x)|^4 \dd{x} = N + 2N(N-1) = 2N^2 - N.
+\end{equation*}
+
+\qpart{Prove that \begin{equation*} \int_0^1 |f(x)| \dd{x} \ge \frac{1}{2\sqrt{N}}.\end{equation*} When does the equality hold?}
+
+\noindent
+By Cauchy-Schwarz, we have,
+\begin{align*}
+    \left(\int_0^1 |f(x)|^2 \dd{x}\right)^2 &\le \left(\int_0^1 |f(x)| \dd{x}\right) \left(\int_0^1 |f(x)|^3 \dd{x}\right) \\
+    N^2                                     &\le \left(\int_0^1 |f(x)| \dd{x}\right) \left(\int_0^1 |f(x)|^3 \dd{x}\right).
+\end{align*}
+A second application of Cauchy-Schwarz, gives:
+\begin{align*}
+    \left(\int_0^1 |f(x)|^3 \dd{x}\right)^2 &\le \left(\int_0^1 |f(x)|^2 \dd{x}\right) \left(\int_0^1 |f(x)|^4 \dd{x}\right) \\
+    \left(\int_0^1 |f(x)|^3 \dd{x}\right)^2 &\le N^2(2N-1) \\
+    \int_0^1 |f(x)|^3 \dd{x} &\le N\sqrt{2N - 1}.
+\end{align*}
+Putting them together, we have:
+\begin{equation*}
+    \int_0^1 |f(x)| \dd{x} \ge \frac{N^2}{N\sqrt{2N-1}} = \frac{N}{\sqrt{2N-1}}
+\end{equation*}
+For all $N \ge 1$, $\frac{N}{\sqrt{2N-1}} > \frac{1}{2\sqrt{N}}$ since rearranging this gives the equivalent inequality $4N^3 > 2N - 1$ which is clearly true for all such $N$, so
+\begin{equation*}
+    \int_0^1 |f(x)| \dd{x} \ge \frac{N}{\sqrt{2N-1}} > \frac{1}{2\sqrt{N}}
+\end{equation*}
+\bigskip\noindent
+This tells us that the equality never holds.
+\end{document}
